@@ -1,6 +1,7 @@
 from controller.ProductController import product_blueprint
 from controller.LoginController import login_blueprint
 from controller.PromotionController import promotion_blueprint
+from controller.OrderController import order_blueprint
 
 from flask import Flask
 from flask import jsonify
@@ -20,6 +21,7 @@ app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
 app.register_blueprint(product_blueprint)
 app.register_blueprint(login_blueprint)
 app.register_blueprint(promotion_blueprint)
+app.register_blueprint(order_blueprint)
 
 
 CORS(app)
