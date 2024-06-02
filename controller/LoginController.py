@@ -13,12 +13,12 @@ from sevices.UserHandler import UserHandler
 login_blueprint = Blueprint('login', __name__)
 user_handler = UserHandler()
 
-@login_blueprint.route('/login' , methods=['POST'])
+@login_blueprint.route('/login' , methods=['POST','GET'])
 def login():
     try:
         #Lấy các tham số
-        email = request.json.get('email')
-        password = request.json.get('password')
+        email = request.args.get('username')
+        password = request.args.get('password')
         check = user_handler.check(email , password)
 
         #tạo tokens
