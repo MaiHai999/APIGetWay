@@ -9,7 +9,7 @@ import requests
 promotion_blueprint = Blueprint('promotion', __name__)
 env_vars = dotenv_values('.env')
 
-@promotion_blueprint.route('/promotion_get' , methods=['GET'])
+@promotion_blueprint.route('/promotion_get' , methods=['GET','POST'])
 def promotion_get():
     try:
         url = env_vars.get('URL_PROMOTION_GET')
@@ -27,7 +27,7 @@ def promotion_get():
         response = jsonify({"error": error_message})
         return response, 500
 
-@promotion_blueprint.route('/promotion_add' , methods=['GET'])
+@promotion_blueprint.route('/promotion_add' , methods=['GET','POST'])
 @jwt_required()
 def promotion_add():
     try:
@@ -61,7 +61,7 @@ def promotion_add():
         response = jsonify({"error": error_message})
         return response, 500
 
-@promotion_blueprint.route('/promotion_get_id' , methods=['GET'])
+@promotion_blueprint.route('/promotion_get_id' , methods=['GET','POST'])
 def promotion_get_id():
     try:
         data = request.json
@@ -84,7 +84,7 @@ def promotion_get_id():
         response = jsonify({"error": error_message})
         return response, 500
 
-@promotion_blueprint.route('/promotion_update' , methods=['GET'])
+@promotion_blueprint.route('/promotion_update' , methods=['GET','POST'])
 @jwt_required()
 def promotion_update():
     try:
@@ -121,7 +121,7 @@ def promotion_update():
         response = jsonify({"error": error_message})
         return response, 500
 
-@promotion_blueprint.route('/promotion_del' , methods=['GET'])
+@promotion_blueprint.route('/promotion_del' , methods=['GET','POST'])
 @jwt_required()
 def promotion_del():
     try:

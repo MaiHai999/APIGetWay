@@ -10,7 +10,7 @@ import requests
 product_blueprint = Blueprint('product', __name__)
 env_vars = dotenv_values('.env')
 
-@product_blueprint.route('/product_get' , methods=['GET'])
+@product_blueprint.route('/product_get' , methods=['GET','POST'])
 def product_get():
     try:
         url = env_vars.get('URL_PRODUCT_GET')
@@ -28,7 +28,7 @@ def product_get():
         return response, 500
 
 
-@product_blueprint.route('/product_get_id' , methods=['GET'])
+@product_blueprint.route('/product_get_id' , methods=['GET','POST'])
 def product_get_id():
     try:
         data = request.json
@@ -49,7 +49,30 @@ def product_get_id():
         response = jsonify({"error": error_message})
         return response, 500
 
-@product_blueprint.route('/product_get_loai' , methods=['GET'])
+@product_blueprint.route('/find', methods=['GET', 'POST'])
+def find_product():
+    try:
+        data = request.json
+        keyword = data['keyword']
+
+        url = env_vars.get('URL_PRODUCT_FIND')
+        payload = {'keyword': keyword}
+
+        response = requests.get(url, json=payload)
+
+        if response.status_code == 200:
+            data = response.json()
+            return jsonify(data)
+        else:
+            error_message = {'error': 'Failed to fetch data'}
+            return jsonify(error_message), response.status_code
+    except Exception as e:
+        error_message = "Error: {}".format(str(e))
+        response = jsonify({"error": error_message})
+        return response, 500
+
+
+@product_blueprint.route('/product_get_loai' , methods=['GET','POST'])
 def product_get_loai():
     try:
         data = request.json
@@ -71,7 +94,7 @@ def product_get_loai():
         return response, 500
 
 
-@product_blueprint.route('/loai_rem' , methods=['GET'])
+@product_blueprint.route('/loai_rem' , methods=['GET','POST'])
 def product_get_all_loai():
     try:
         url = env_vars.get('URL_PRODUCT_ALL_LOAI')
@@ -90,7 +113,7 @@ def product_get_all_loai():
         response = jsonify({"error": error_message})
         return response, 500
 
-@product_blueprint.route('/comment' , methods=['GET'])
+@product_blueprint.route('/comment' , methods=['GET','POST'])
 def comment():
     try:
         data = request.json
@@ -123,7 +146,7 @@ def comment():
         response = jsonify({"error": error_message})
         return response, 500
 
-@product_blueprint.route('/product_add' , methods=['GET'])
+@product_blueprint.route('/product_add' , methods=['GET','POST'])
 @jwt_required()
 def product_add():
     try:
@@ -169,7 +192,7 @@ def product_add():
         response = jsonify({"error": error_message})
         return response, 500
 
-@product_blueprint.route('/product_update' , methods=['GET'])
+@product_blueprint.route('/product_update' , methods=['GET','POST'])
 @jwt_required()
 def product_update():
     try:
@@ -217,7 +240,7 @@ def product_update():
         return response, 500
 
 
-@product_blueprint.route('/product_del' , methods=['GET'])
+@product_blueprint.route('/product_del' , methods=['GET','POST'])
 @jwt_required()
 def product_del():
     try:

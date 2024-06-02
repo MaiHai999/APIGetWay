@@ -12,7 +12,7 @@ order_blueprint = Blueprint('order', __name__)
 env_vars = dotenv_values('.env')
 
 #Đơn hàng
-@order_blueprint.route('/api/orders' , methods=['GET'])
+@order_blueprint.route('/api/orders' , methods=['GET','POST'])
 # @jwt_required()
 def order_get():
     try:
@@ -36,7 +36,7 @@ def order_get():
                 "message":respone.json().get('message'),
             }
             return jsonify(error_message), 500
-@order_blueprint.route('/api/orders/<id>' , methods=['GET'])
+@order_blueprint.route('/api/orders/<id>' , methods=['GET','POST'])
 # @jwt_required()
 def order_get_id(id):
     try:
@@ -80,7 +80,7 @@ def order_add():
             }
             return jsonify(error_message), 500
 
-@order_blueprint.route('/api/orders/<id>' , methods=['PUT'])
+@order_blueprint.route('/api/orders/<id>' , methods=['PUT','POST'])
 # @jwt_required()
 def order_update(id):
     try:
@@ -100,7 +100,7 @@ def order_update(id):
             }
             return jsonify(error_message), 500
 
-@order_blueprint.route('/api/orders/<id>' , methods=['DELETE'])
+@order_blueprint.route('/api/orders/<id>' , methods=['DELETE','POST'])
 # @jwt_required()
 def order_delete(id):
     try:
@@ -118,7 +118,7 @@ def order_delete(id):
             }
             return jsonify(error_message), 500
 # Chi tiết đơn hàng
-@order_blueprint.route('/api/orders/<id>/order/detail_order', methods=['GET'])
+@order_blueprint.route('/api/orders/<id>/order/detail_order', methods=['GET','POST'])
 def order_detail_get(id):
         try:
             url = env_vars.get('URL_ORDERS_DETAIL_ORDER')
