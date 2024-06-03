@@ -15,25 +15,45 @@ env_vars = dotenv_values('.env')
 @order_blueprint.route('/api/orders' , methods=['GET','POST'])
 # @jwt_required()
 def order_get():
-    try:
-        url = env_vars.get('URL_ORDERS_GET')
-        respone = requests.get(url)
+    if request.method == 'GET':
+        try:
+            url = env_vars.get('URL_ORDERS_GET')
+            respone = requests.get(url)
 
-        if respone.status_code == 200:
-            req_data = respone.json(object_pairs_hook=OrderedDict)
-            data = req_data.get('data')
-            return jsonify(data), 200
-        else:
-            error_message = {
-                "status": respone.status_code,
-                "message": respone.json().get('message'),
-                "data":[]
+            if respone.status_code == 200:
+                req_data = respone.json(object_pairs_hook=OrderedDict)
+                data = req_data.get('data')
+
+                return jsonify(data), 200
+            else:
+                error_message = {
+                    "status": respone.status_code,
+                    "message": respone.json().get('message'),
+                    "data":[]
+                }
+                return jsonify(error_message),respone.status_code
+        except Exception as e:
+                error_message = {
+                    "status":500,
+                    "message":respone.json().get('message'),
+                }
+                return jsonify(error_message), 500
+    else:
+        try:
+            url = env_vars.get('URL_ORDERS_GET')
+            data = request.get_json()
+            respone = requests.post(url,json=data)
+            success_msg = {
+                "status": 201,
+                "message": 'Successfully added',
+                "data": []
             }
-            return jsonify(error_message),respone.status_code
-    except Exception as e:
+            return jsonify(success_msg), 201
+
+        except Exception as e:
             error_message = {
-                "status":500,
-                "message":respone.json().get('message'),
+                "status": 500,
+                "message": "Error failed to post",
             }
             return jsonify(error_message), 500
 @order_blueprint.route('/api/orders/<id>' , methods=['GET','POST'])
