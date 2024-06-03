@@ -36,7 +36,7 @@ def promotion_add():
         ngaybatdau_str = data.get('ngaybatdau')
         ngayketthuc_str = data.get('ngayketthuc')
         phantram = float(data.get('phantram'))
-        list_rem = data.get('id_rem')
+        list_rem = data.get('list_rem')
 
         data_dict = {
             'ten': ten,
@@ -57,6 +57,7 @@ def promotion_add():
             return jsonify(error_message), response.status_code
 
     except Exception as e:
+        print(e)
         error_message = "Error: {}".format(str(e))
         response = jsonify({"error": error_message})
         return response, 500
@@ -95,7 +96,7 @@ def promotion_update():
         ngaybatdau_str = data.get('ngaybatdau')
         ngayketthuc_str = data.get('ngayketthuc')
         phantram = float(data.get('phantram'))
-        list_rem = data.get('id_rem')
+        list_rem = data.get('list_rem')
 
         data_dict = {
             'id' : id,

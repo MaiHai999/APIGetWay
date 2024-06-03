@@ -157,7 +157,7 @@ def product_add():
         baohanh = data['baohanh']
         kichthuoc = data['kichthuoc']
         chatlieu = data['chatlieu']
-        soluong = int(data['soluong'])
+        so_luong = int(data['so_luong'])
         id_loairem = int(data['idloairem'])
         gia_goc = float(data['gia'])
         image_base64 = data['hinh_anh']
@@ -169,7 +169,7 @@ def product_add():
             'baohanh': baohanh,
             'kichthuoc': kichthuoc,
             'chatlieu': chatlieu,
-            'soluong': soluong,
+            'so_luong': so_luong,
             'idloairem': id_loairem,
             'gia': gia_goc,
             'hinh_anh': image_base64
@@ -188,6 +188,7 @@ def product_add():
             return jsonify(error_message), response.status_code
 
     except Exception as e:
+        print(e)
         error_message = "Error: {}".format(str(e))
         response = jsonify({"error": error_message})
         return response, 500
@@ -204,7 +205,7 @@ def product_update():
         baohanh = data['baohanh']
         kichthuoc = data['kichthuoc']
         chatlieu = data['chatlieu']
-        so_luong = data['soluong']
+        so_luong = data['so_luong']
         id_loairem = int(data['idloairem'])
         gia_goc = float(data['gia'])
         image_base64 = data['hinh_anh']
@@ -218,7 +219,7 @@ def product_update():
             'baohanh': baohanh,
             'kichthuoc': kichthuoc,
             'chatlieu': chatlieu,
-            'soluong': so_luong,
+            'so_luong': so_luong,
             'idloairem': id_loairem,
             'gia': gia_goc,
             'hinh_anh': image_base64
@@ -235,10 +236,10 @@ def product_update():
             return jsonify(error_message), response.status_code
 
     except Exception as e:
+        print(e)
         error_message = "Error: {}".format(str(e))
         response = jsonify({"error": error_message})
         return response, 500
-
 
 @product_blueprint.route('/product_del' , methods=['GET','POST'])
 @jwt_required()
