@@ -214,3 +214,28 @@ def order_detail_delete(id,idrem):
                 "message": response.json().get('message'),
             }
             return jsonify(error_message), 500
+
+@order_blueprint.route('/api/status',methods=['GET'])
+def status_get():
+    try:
+        url = env_vars.get('URL_STATUS_GET')
+        response = requests.get(url)
+        if response.status_code == 200:
+            req_data = response.json()
+            data = req_data
+            return jsonify(data), 200
+        else:
+            error_message = {
+                "status": response.status_code,
+                "message": response.json().get('message'),
+                "data": []
+            }
+            return jsonify(error_message), response.status_code
+    except Exception as e:
+        error_message = {
+            "status": 500,
+            "message": response.json().get('message'),
+        }
+        print(e)
+        return jsonify(error_message), 500
+
