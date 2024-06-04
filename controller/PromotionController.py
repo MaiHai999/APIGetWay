@@ -5,14 +5,16 @@ from flask import abort, redirect
 from flask_jwt_extended import jwt_required
 from dotenv import dotenv_values
 import requests
+from config import Config
 
 promotion_blueprint = Blueprint('promotion', __name__)
-env_vars = dotenv_values('.env')
+
+config = Config()
 
 @promotion_blueprint.route('/promotion_get' , methods=['GET','POST'])
 def promotion_get():
     try:
-        url = env_vars.get('URL_PROMOTION_GET')
+        url = config.URL_PROMOTION_GET
         response = requests.get(url)
 
         if response.status_code == 200:
@@ -46,7 +48,7 @@ def promotion_add():
             'id_rem': list_rem
         }
 
-        url = env_vars.get('URL_PROMOTION_ADD')
+        url = config.URL_PROMOTION_ADD
         response = requests.get(url, json=data_dict)
 
         if response.status_code == 200:
@@ -68,7 +70,7 @@ def promotion_get_id():
         data = request.json
         id = data['id']
 
-        url = env_vars.get('URL_PROMOTION_GET_ID')
+        url = config.URL_PROMOTION_GET_ID
         payload = {'id': id}
 
         response = requests.get(url, json=payload)
@@ -107,7 +109,7 @@ def promotion_update():
             'id_rem': list_rem
         }
 
-        url = env_vars.get('URL_PROMOTION_UPDATE')
+        url = config.URL_PROMOTION_UPDATE
         response = requests.get(url, json=data_dict)
 
         if response.status_code == 200:
@@ -129,7 +131,7 @@ def promotion_del():
         data = request.json
         id = data['id']
 
-        url = env_vars.get('URL_PROMOTION_DEL')
+        url = config.URL_PROMOTION_DEL
         payload = {'id': id}
 
         response = requests.get(url, json=payload)

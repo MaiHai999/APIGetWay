@@ -6,14 +6,15 @@ from flask import abort, redirect
 from flask_jwt_extended import jwt_required
 from dotenv import dotenv_values
 import requests
+from config import Config
 
 product_blueprint = Blueprint('product', __name__)
-env_vars = dotenv_values('.env')
+config = Config()
 
 @product_blueprint.route('/product_get' , methods=['GET','POST'])
 def product_get():
     try:
-        url = env_vars.get('URL_PRODUCT_GET')
+        url = config.URL_PRODUCT_GET
         response = requests.get(url)
 
         if response.status_code == 200:
@@ -33,7 +34,7 @@ def product_get_id():
     try:
         data = request.json
         id = data['id']
-        url = env_vars.get('URL_PRODUCT_GET_ID')
+        url = config.URL_PRODUCT_GET_ID
         payload = {'id': id}
 
         response = requests.get(url, json= payload)
@@ -55,7 +56,7 @@ def find_product():
         data = request.json
         keyword = data['keyword']
 
-        url = env_vars.get('URL_PRODUCT_FIND')
+        url = config.URL_PRODUCT_FIND
         payload = {'keyword': keyword}
 
         response = requests.get(url, json=payload)
@@ -77,7 +78,7 @@ def product_get_loai():
     try:
         data = request.json
         id = data['id']
-        url = env_vars.get('URL_PRODUCT_GET_LOAI')
+        url = config.URL_PRODUCT_GET_LOAI
         payload = {'id': id}
 
         response = requests.get(url, json= payload)
@@ -97,7 +98,7 @@ def product_get_loai():
 @product_blueprint.route('/loai_rem' , methods=['GET','POST'])
 def product_get_all_loai():
     try:
-        url = env_vars.get('URL_PRODUCT_ALL_LOAI')
+        url = config.URL_PRODUCT_ALL_LOAI
 
         response = requests.get(url)
 
@@ -131,7 +132,7 @@ def comment():
             'idsp': idsp
         }
 
-        url = env_vars.get('URL_PRODUCT_COMMENT')
+        url = config.URL_PRODUCT_COMMENT
         response = requests.get(url, json=data_to_send)
 
         if response.status_code == 200:
@@ -176,7 +177,7 @@ def product_add():
         }
 
 
-        url = env_vars.get('URL_PRODUCT_ADD')
+        url = config.URL_PRODUCT_ADD
         response = requests.get(url, json=product_data)
 
 
@@ -225,7 +226,7 @@ def product_update():
             'hinh_anh': image_base64
         }
 
-        url = env_vars.get('URL_PRODUCT_UPDATE')
+        url = config.URL_PRODUCT_UPDATE
         response = requests.get(url, json=product_data)
 
         if response.status_code == 200:
@@ -248,7 +249,7 @@ def product_del():
         data = request.json
         id = data['id']
 
-        url = env_vars.get('URL_PRODUCT_DEL')
+        url = config.URL_PRODUCT_DEL
         payload = {'id': id}
 
         response = requests.get(url, json=payload)

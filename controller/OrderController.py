@@ -7,9 +7,11 @@ from flask import abort, redirect
 from flask_jwt_extended import jwt_required
 from dotenv import dotenv_values
 import requests
+from config import Config
 
 order_blueprint = Blueprint('order', __name__)
-env_vars = dotenv_values('.env')
+config = Config()
+
 
 #Đơn hàng
 @order_blueprint.route('/api/orders' , methods=['GET','POST'])
@@ -17,7 +19,7 @@ env_vars = dotenv_values('.env')
 def order_get():
     if request.method == 'GET':
         try:
-            url = env_vars.get('URL_ORDERS_GET')
+            url =  config.URL_ORDERS_GET
             respone = requests.get(url)
 
             if respone.status_code == 200:
@@ -38,9 +40,9 @@ def order_get():
                     "message":respone.json().get('message'),
                 }
                 return jsonify(error_message), 500
-    else:
+    elif request.method == 'POST':
         try:
-            url = env_vars.get('URL_ORDERS_GET')
+            url = config.URL_ORDERS_GET
             data = request.get_json()
             respone = requests.post(url,json=data)
             success_msg = {
@@ -60,7 +62,7 @@ def order_get():
 # @jwt_required()
 def order_get_id(id):
     try:
-        url = env_vars.get('URL_ORDERS_GET_ID')
+        url = config.URL_ORDERS_GET_ID
         url = url.format(id)
         respone = requests.get(url)
 
@@ -81,12 +83,13 @@ def order_get_id(id):
                 "message":respone.json().get('message'),
             }
             return jsonify(error_message), 500
+
 @order_blueprint.route('/api/orders' , methods=['POST'])
 # @jwt_required()
 def order_add():
     try:
         data = request.json  # Nhận đối tượng từ client
-        response = requests.post(env_vars.get('URL_ORDERS_GET'), json=data)
+        response = requests.post(config.URL_ORDERS_GET, json=data)
 
         if response.status_code == 201:
             return jsonify(response.json()), 201
@@ -104,7 +107,7 @@ def order_add():
 # @jwt_required()
 def order_update(id):
     try:
-        url = env_vars.get('URL_ORDERS_GET_ID')
+        url = config.URL_ORDERS_GET_ID
         url = url.format(id)
         data = request.json  # Nhận đối tượng từ client
         response = requests.put(url, json=data)
@@ -124,7 +127,7 @@ def order_update(id):
 # @jwt_required()
 def order_delete(id):
     try:
-        url = env_vars.get('URL_ORDERS_GET_ID')
+        url = config.URL_ORDERS_GET_ID
         url = url.format(id)
         respone = requests.delete(url)
         if respone.ok:
@@ -141,7 +144,7 @@ def order_delete(id):
 @order_blueprint.route('/api/orders/<id>/order/detail_order', methods=['GET','POST'])
 def order_detail_get(id):
         try:
-            url = env_vars.get('URL_ORDERS_DETAIL_ORDER')
+            url = config.URL_ORDERS_DETAIL_ORDER
             url = url.format(id)
             response = requests.get(url)
             print(url)
@@ -166,7 +169,7 @@ def order_detail_get(id):
 @order_blueprint.route('/api/orders/<id>/order/detail_order', methods=['POST'])
 def order_detail_post(id):
         try:
-            url = env_vars.get('URL_ORDERS_DETAIL_ORDER')
+            url = config.URL_ORDERS_DETAIL_ORDER
             url = url.format(id)
             data = request.json
             response = requests.post(url,json=data)
@@ -192,7 +195,7 @@ def order_detail_post(id):
 @order_blueprint.route('/api/orders/<id>/order/detail_order/<idrem>', methods=['PUT'])
 def order_detail_update(id,idrem):
         try:
-            url = env_vars.get('URL_ORDERS_DETAIL_ORDER_ID')
+            url = config.URL_ORDERS_DETAIL_ORDER_ID
             url = url.format(id,idrem)
             data = request.json
             response = requests.put(url,json=data)
@@ -217,7 +220,7 @@ def order_detail_update(id,idrem):
 @order_blueprint.route('/api/orders/<id>/order/detail_order/<idrem>', methods=['DELETE'])
 def order_detail_delete(id,idrem):
         try:
-            url = env_vars.get('URL_ORDERS_DETAIL_ORDER_ID')
+            url = config.URL_ORDERS_DETAIL_ORDER_ID
             url = url.format(id,idrem)
             data = request.json
             response = requests.delete(url,json=data)
@@ -238,7 +241,7 @@ def order_detail_delete(id,idrem):
 @order_blueprint.route('/api/status',methods=['GET'])
 def status_get():
     try:
-        url = env_vars.get('URL_STATUS_GET')
+        url = config.URL_STATUS_GET
         response = requests.get(url)
         if response.status_code == 200:
             req_data = response.json()
