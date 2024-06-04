@@ -103,7 +103,7 @@ def order_add():
             }
             return jsonify(error_message), 500
 
-@order_blueprint.route('/api/orders/<id>' , methods=['PUT','POST'])
+@order_blueprint.route('/api/orders/<id>' , methods=['PUT'])
 # @jwt_required()
 def order_update(id):
     try:
@@ -113,7 +113,7 @@ def order_update(id):
         response = requests.put(url, json=data)
 
         if response.ok:
-            return jsonify(response.json()), 200
+            return jsonify({"success":"Successfully to update order"}), 200
         else:
             return jsonify({"error": "Failed to update order"}), response.status_code
     except Exception as e:
@@ -262,3 +262,28 @@ def status_get():
         print(e)
         return jsonify(error_message), 500
 
+
+@order_blueprint.route('/api/orders/report/<year>',methods=['GET'])
+def getSumOrder(year):
+    try:
+        url = config.URL_GET_SUM_ORDER
+        url = url.format(year)
+        response = requests.get(url)
+        if response.status_code == 200:
+            req_data = response.json()
+            data = req_data
+            return jsonify(data), 200
+        else:
+            error_message = {
+                "status": response.status_code,
+                "message": response.json().get('message'),
+                "data": []
+            }
+            return jsonify(error_message), response.status_code
+    except Exception as e:
+        error_message = {
+            "status": 500,
+            "message": response.json().get('message'),
+        }
+        print(e)
+        return jsonify(error_message), 500

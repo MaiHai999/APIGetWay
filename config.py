@@ -29,3 +29,4 @@ class Config:
         self.URL_ORDERS_DETAIL_ORDER = f"{self.base_url_orders}/orders/{{}}/order/detail_order"
         self.URL_ORDERS_DETAIL_ORDER_ID = f"{self.base_url_orders}/orders/{{}}/order/detail_order/{{}}"
         self.URL_STATUS_GET = f"{self.base_url_orders}/status"
+        self.URL_GET_SUM_ORDER = f"{self.base_url_orders}/orders/report/{{}}"
